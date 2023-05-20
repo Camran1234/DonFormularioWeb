@@ -414,4 +414,4 @@ sqlRequest.getRespuestas = async(idEncuesta) => {
     }
 }
 
-module.exports = sqlRequest;
+export default sqlRequest;
