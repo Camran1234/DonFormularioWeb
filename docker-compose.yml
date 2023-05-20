@@ -15,6 +15,7 @@ services:
       - appdb    
     volumes:
       - ./dbTec.sql:/docker-entrypoint-initdb.d/dbTec.sql
+      - db_data:/var/lib/mysql
 
   backend:
     build: ./ptec_backend
@@ -44,6 +45,9 @@ services:
     ports:
       - "80:80"
     restart: always
+
+volumes:
+  db_data:
 
 networks:
   appdb:
