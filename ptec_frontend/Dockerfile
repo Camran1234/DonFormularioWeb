@@ -10,3 +10,5 @@ RUN npm run build
 
 FROM node:latest
 COPY --from=build /app/build /var/lib/frontend
+
+CMD ["ls","/var/lib/frontend"]
