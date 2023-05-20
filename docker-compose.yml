@@ -18,7 +18,7 @@ services:
       - db_data:/var/lib/mysql
 
   backend:
-    image: camran1234/donformulario-backend:latest
+    build: ./ptec_backend
     restart: on-failure
     networks:
       - appdb
@@ -28,12 +28,9 @@ services:
       - db
 
   frontend:
-    image: camran1234/donformulario-frontend:latest
-    restart: on-failure
-    networks:
-      - appdb
+    build: ./ptec_frontend
     volumes:
-      - frontend:/usr/share/nginx/html
+      - frontend:/var/lib/frontend
 
   nginx:
     image: nginx:stable-alpine
