@@ -20,7 +20,7 @@ const Login = () => {
             .then(result => {
                 const tipo = result.estado;
                 if(tipo == undefined){
-                    alert(result.message)
+                    alert(JSON.stringify(result))
                 }else{
                     console.log(tipo)
                     if(tipo == "admin"){

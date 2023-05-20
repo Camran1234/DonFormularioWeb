@@ -84,6 +84,8 @@ CREATE TABLE IF NOT EXISTS `Respuesta` (
         REFERENCES `dbTec`.`Usuario` (`correo`)
 );
 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 INSERT INTO Usuario
     (correo, password, sexo, estadoCivil, fechaNacimiento, nivelEscolaridad, tipo)
     VALUES ("admin", "21232f297a57a5a743894a0e4a801fc3", "masculino", "casado","2000-5-4", "diversificado", "admin");

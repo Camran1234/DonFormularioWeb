@@ -32,18 +32,18 @@ adminController.getResultados = async(req, res) => {
     const sqlResultFV = `SELECT fv as name, COUNT(fv) as uv
                         FROM Respuesta WHERE idPregunta=? 
                         GROUP BY fv`;
-    const sqlResultMultiple = `SELECT r.idOpcion, o.opcion as name, COUNT(r.idOpcion) as uv 
+    const sqlResultMultiple = `SELECT distinct r.idOpcion, o.opcion as name, COUNT(r.idOpcion) as uv 
                                 FROM Respuesta r 
                                 LEFT JOIN Opcion o 
                                     ON r.idOpcion=o.idOpcion 
-                                WHERE r.idPregunta=?   
-                                GROUP BY idOpcion`
+                                WHERE r.idPregunta=?`
     let respuestas = [];
     try{
         connection.query(sqlPreguntas, [idEncuesta], (error, preguntas) => {
             if(error){
                 return res.status(500).send({
-                    message: "Error: "+error
+                    message: error,
+                    respuestas: undefined
                 })
             }    
             if(preguntas.length > 0){
@@ -52,7 +52,10 @@ adminController.getResultados = async(req, res) => {
                     if(pregunta.tipo == "fv"){
                         connection.query(sqlResultFV, [pregunta.idPregunta], (errorPregunta, resultPregunta) => {
                             if(errorPregunta){
-                                throw errorPregunta;
+                                return res.status(500).send({
+                                    message: errorPregunta,
+                                    respuestas: undefined
+                                })
                             }
                             
 
@@ -74,7 +77,10 @@ adminController.getResultados = async(req, res) => {
                     }else if(pregunta.tipo == "multiple"){
                         connection.query(sqlResultMultiple, [pregunta.idPregunta], (errorPregunta, resultPregunta) => { 
                             if(errorPregunta){
-                                throw errorPregunta;
+                                return res.status(500).send({
+                                    message: errorPregunta,
+                                    respuestas: undefined
+                                })
                             }
 
                             const respuesta = {
@@ -106,7 +112,8 @@ adminController.getResultados = async(req, res) => {
         })
     }catch(err){
         return res.status(500).send({
-            message: "Error: "+err
+            message: err,
+            respuestas: undefined
         })
     }
 }

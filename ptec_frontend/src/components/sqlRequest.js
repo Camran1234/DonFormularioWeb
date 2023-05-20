@@ -405,6 +405,9 @@ sqlRequest.getRespuestas = async(idEncuesta) => {
             alert("Error: servidor no disponible");
             return;
         }
+        if(response.respuestas === undefined){
+            console.warn(JSON.stringify(response));
+        }
         return response.respuestas;
     }catch(error){
         console.log(error);

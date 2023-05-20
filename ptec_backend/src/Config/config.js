@@ -10,10 +10,10 @@ const configure = {
     port: 3306
 }
 
-const connection = mysql.createConnection(configure);
+let connection = mysql.createConnection(configure);
 
 function connectWithRetry() {
-  
+    const connection = mysql.createConnection(configure);
     connection.connect((err) => {
       if (err) {
         console.error('Error al conectar a la base de datos:', err);
@@ -22,12 +22,11 @@ function connectWithRetry() {
       } else {
         console.log('Conexión exitosa a la base de datos con el ID '+connection.threadId);
       }
-    });
+    });   
+    return connection; 
   }
   
   // Llamar a la función para iniciar la conexión
-  connectWithRetry();
-
-
+  connection = connectWithRetry();
 
 module.exports = connection, configure;
