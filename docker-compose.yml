@@ -42,6 +42,7 @@ services:
     container_name: nginx_reverse_proxy
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ptec_fontend/build:/var/www/html:ro
     ports:
       - "80:80"
     restart: always
