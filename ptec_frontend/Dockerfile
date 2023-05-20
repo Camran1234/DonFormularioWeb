@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:latest as build
 
 WORKDIR /app
 
@@ -6,10 +6,12 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+RUN npm run build
 
-EXPOSE 3000
+FROM nginx:stable-alpine
 
-CMD ["npm", "start"]
+COPY --from=build /app/build /usr/share/nginx/html
 
+EXPOSE 80
 
-
+CMD ["nginx", "-g", "daemon off;"]
