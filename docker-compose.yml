@@ -41,6 +41,8 @@ services:
     ports:
       - "80:80"
     restart: always
+    depends_on:
+      - frontend
 
 volumes:
   db_data:
