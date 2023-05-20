@@ -18,7 +18,7 @@ services:
       - db_data:/var/lib/mysql
 
   backend:
-    image: donformulario-backend
+    image: camran1234/donformulario-backend:latest
     restart: on-failure
     networks:
       - appdb
@@ -28,7 +28,7 @@ services:
       - db
 
   frontend:
-    image: donformulario-frontend
+    image: camran1234/donformulario-frontend:latest
     restart: on-failure
     networks:
       - appdb
