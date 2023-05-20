@@ -12,32 +12,21 @@ const configure = {
 
 const connection = mysql.createConnection(configure);
 
-function sleep(segundos) {
-    setTimeout(() => {
-      // Aquí puedes colocar el código que deseas ejecutar después del sleep
-      console.log('Han pasado 3 segundos');
-    }, 1000 * segundos); // 1000 ms = 1 segundo
-  }
-
-function startConnection (connection) {
-    connection.connect((error) => {
-        if(error) {
-            console.log("Configuracion: "+JSON.stringify(configure));
-            console.error('Error de conexion: '+error.stack);
-            console.log("Error code: "+JSON.stringify(error));
-        }
-    
-        console.log('Conexion establecida con el ID '+connection.threadId)
+function connectWithRetry() {
+  
+    connection.connect((err) => {
+      if (err) {
+        console.error('Error al conectar a la base de datos:', err);
+        console.log('Reintentando la conexión en 5 segundos...');
+        setTimeout(connectWithRetry, 5000);
+      } else {
+        console.log('Conexión exitosa a la base de datos con el ID '+connection.threadId);
+      }
     });
-}
-
-let resultThread = null;
-while(resultThread == null) {
-    resultThread = startConnection(connection);
-    if(resultThread == null) {
-        sleep(3);
-    }
-}
+  }
+  
+  // Llamar a la función para iniciar la conexión
+  connectWithRetry();
 
 
 
