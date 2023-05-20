@@ -1,4 +1,4 @@
-FROM node:latest as build
+FROM node:latest
 
 WORKDIR /app
 
@@ -6,9 +6,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build
 
-FROM node:latest
-COPY --from=build /app/build /var/lib/frontend
+EXPOSE 3000
 
-CMD ["ls","/var/lib/frontend"]
+CMD ["npm", "start"]

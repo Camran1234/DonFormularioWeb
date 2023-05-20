@@ -29,24 +29,18 @@ services:
 
   frontend:
     image: camran1234/donformulario-frontend:latest
-    volumes:
-      - frontend:/var/lib/frontend
-
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx_reverse_proxy
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - frontend:/usr/share/nginx/html
+    restart: on-failure
+    networks:
+      - appdb
     ports:
-      - "80:80"
-    restart: always
+      - 80:80
     depends_on:
-      - frontend
+      - backend
+    
+  
 
 volumes:
   db_data:
-  frontend:
 
 networks:
   appdb:
